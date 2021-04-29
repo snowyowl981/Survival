@@ -45,6 +45,7 @@ public class PlayerCtrl : MonoBehaviour
     private Camera theCamera;
     private Rigidbody myRig;
     private Transform tr;
+    private GunCtrl theGunCtrl;
 
     // [SerializeField]
     // Start is called before the first frame update
@@ -58,6 +59,8 @@ public class PlayerCtrl : MonoBehaviour
         // 월드기준에서 y값을 0으로 맞추면 땅에 박힘, 플레이어 기준에서 0은 캐릭터의 중간정도.
         originPosY = theCamera.transform.localPosition.y;
         applyCrouchPosY = originPosY;
+
+        theGunCtrl = FindObjectOfType<GunCtrl>();
 
     }
 
@@ -163,10 +166,6 @@ public class PlayerCtrl : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.LeftShift))
         {
-            if(isCrouch)
-            {
-                Crouch();
-            }
             Running();
         }
         if(Input.GetKeyUp(KeyCode.LeftShift))
@@ -178,6 +177,13 @@ public class PlayerCtrl : MonoBehaviour
     // 달리기
     private void Running()
     {
+        if(isCrouch)
+        {
+            Crouch();
+        }
+
+        theGunCtrl.CancelFineSight();
+
         isRun = true;
         applySpeed = runSpeed;
     }
