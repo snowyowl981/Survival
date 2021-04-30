@@ -24,6 +24,7 @@ public class GunCtrl : MonoBehaviour
     [SerializeField]
     private Camera theCam;
     private AudioSource audioSource;
+    private Crosshair theCrosshair;
 
     // 피격 이펙트
     [SerializeField]
@@ -37,6 +38,7 @@ public class GunCtrl : MonoBehaviour
         originPos = Vector3.zero;
         audioSource = GetComponent<AudioSource>();
         originPos = transform.localPosition;
+        theCrosshair = FindObjectOfType<Crosshair>();
     }
 
     // Update is called once per frame
@@ -88,6 +90,7 @@ public class GunCtrl : MonoBehaviour
     // 발사 후 계산
     private void Shoot() // 발사 후
     {
+        theCrosshair.FireAnimation();
         currentGun.currentBulletCount--;
         currentFireRate = currentGun.fireRate; // 연사 속도 재계산
         PlaySE(currentGun.fireSound);
@@ -102,9 +105,15 @@ public class GunCtrl : MonoBehaviour
     // 명중(오브젝트 풀링을 활용해 성능상 이점)
     private void Hit()
     {
-        if(Physics.Raycast(theCam.transform.position, theCam.transform.forward, out hitInfo, currentGun.range))
+         if(Physics.Raycast(theCam.transform.position,theCam.transform.forward +
+                           new Vector3(Random.Range(-theCrosshair.GetAccuracy() - currentGun.accuracy, theCrosshair.GetAccuracy() + currentGun.accuracy),
+                                       Random.Range(-theCrosshair.GetAccuracy() - currentGun.accuracy, theCrosshair.GetAccuracy() + currentGun.accuracy), 
+                                       0)
+                                       , out hitInfo, currentGun.range))
         {
-            var clone = Instantiate(hit_effect_prefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+            var clone = Instantiate(hit_effect_prefab,
+                                    hitInfo.point,
+                                    Quaternion.LookRotation(hitInfo.normal));
             Destroy(clone, 2f);
         }
     }
@@ -167,6 +176,8 @@ public class GunCtrl : MonoBehaviour
         isFineSight = !isFineSight;
 
         currentGun.anim.SetBool("FineSight", isFineSight);
+        theCrosshair.FineSightAnimation(isFineSight);
+        
         if(isFineSight)
         {
             StopAllCoroutines();
@@ -257,5 +268,15 @@ public class GunCtrl : MonoBehaviour
     {
         audioSource.clip = _clip;
         audioSource.Play();
+    }
+
+    public Gun GetGun()
+    {
+        return currentGun;
+    }
+
+    public bool GetFineSight()
+    {
+        return isFineSight;
     }
 }

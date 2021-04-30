@@ -19,9 +19,13 @@ public class PlayerCtrl : MonoBehaviour
     private float crouchSpeed;
 
     // 상태 변수
+    private bool isWalk = false;
     private bool isRun = false;
     private bool isGround = true;
     private bool isCrouch = false;
+
+    // 움직임 체크 변수(전 프레임의 현재위치)
+    private Vector3 lastPos;
 
     //땅 착지 여부
     private CapsuleCollider capsuleCollider;
@@ -46,6 +50,7 @@ public class PlayerCtrl : MonoBehaviour
     private Rigidbody myRig;
     private Transform tr;
     private GunCtrl theGunCtrl;
+    private Crosshair theCrosshair;
 
     // [SerializeField]
     // Start is called before the first frame update
@@ -54,14 +59,16 @@ public class PlayerCtrl : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         myRig = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
-        applySpeed = walkSpeed;
+        
+        theGunCtrl = FindObjectOfType<GunCtrl>();
+        theCrosshair = FindObjectOfType<Crosshair>();
+
         // localPosition을 쓰는 이유는 월드기준이 아닌 플레이어 기준
         // 월드기준에서 y값을 0으로 맞추면 땅에 박힘, 플레이어 기준에서 0은 캐릭터의 중간정도.
+        // 초기화
+        applySpeed = walkSpeed;
         originPosY = theCamera.transform.localPosition.y;
         applyCrouchPosY = originPosY;
-
-        theGunCtrl = FindObjectOfType<GunCtrl>();
-
     }
 
     // Update is called once per frame
@@ -74,6 +81,11 @@ public class PlayerCtrl : MonoBehaviour
         TryRun();
         TryJump();
         TryCrouch();
+    }
+
+    void FixedUpdate()
+    {
+        MoveCheck();
     }
 
     // 앉기 시도
@@ -90,6 +102,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         // 스위치 역할
         isCrouch = !isCrouch;
+        theCrosshair.CrouchingAnimation(isCrouch);
 
         if(isCrouch)
         {
@@ -100,6 +113,11 @@ public class PlayerCtrl : MonoBehaviour
         {
             applySpeed = walkSpeed;
             applyCrouchPosY = originPosY;
+        }
+        if(isWalk)
+        {
+            isWalk = false;
+            theCrosshair.WalkingAnimation(isWalk);
         }
         // y값 혼자 수정 불가능, 고로 벡터째로 수정해야함
         /* theCamera.transform.localPosition = new Vector3(theCamera.transform.localPosition.x,
@@ -138,6 +156,7 @@ public class PlayerCtrl : MonoBehaviour
     private void IsGround()
     {
         isGround = Physics.Raycast(tr.position, Vector3.down, capsuleCollider.bounds.extents.y + 0.1f);
+        theCrosshair.RunningAnimation(!isGround);
     }
 
 
@@ -185,6 +204,7 @@ public class PlayerCtrl : MonoBehaviour
         theGunCtrl.CancelFineSight();
 
         isRun = true;
+        theCrosshair.RunningAnimation(isRun);
         applySpeed = runSpeed;
     }
 
@@ -192,6 +212,7 @@ public class PlayerCtrl : MonoBehaviour
     private void RunningCancel()
     {
         isRun = false;
+        theCrosshair.RunningAnimation(isRun); 
         applySpeed = walkSpeed;
     }
 
@@ -211,6 +232,23 @@ public class PlayerCtrl : MonoBehaviour
         Vector3 _velocity = (_moveHorizontal + _moveVertical).normalized * applySpeed;
         // 약 0.0016
         myRig.MovePosition(tr.position + _velocity * Time.deltaTime);
+    }
+
+    private void MoveCheck()
+    {
+        if(!isRun && !isCrouch && isGround)
+        {
+            if(Vector3.Distance(lastPos, transform.position) >= 0.01f)
+            {
+                isWalk = true;
+            }
+            else
+            {
+                isWalk = false;
+            }
+            theCrosshair.WalkingAnimation(isWalk);
+            lastPos = transform.position;
+        }
     }
 
     // 상하 카메라 회전
