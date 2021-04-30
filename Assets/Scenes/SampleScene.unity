@@ -184,7 +184,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: {fileID: 2010856132}
+  isFineSight: 0
   originPos: {x: 0, y: 0, z: 0}
+  theCam: {fileID: 963194227}
+  hit_effect_prefab: {fileID: 7515018666070230821, guid: 0ae3e9db69fe40e468393ec94b4aa07a, type: 3}
 --- !u!82 &37552870
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5332,6 +5335,25 @@ Transform:
   m_Father: {fileID: 37552867}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 89, z: 0}
+--- !u!1 &600372557 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0398540479db87b46b30151752c2e52f, type: 3}
+  m_PrefabInstance: {fileID: 894639880}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &600372558
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600372557}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.0061572837
+  m_Height: 0.007905491
+  m_Direction: 1
+  m_Center: {x: 0.00008559297, y: 0.0033055982, z: -0.00031321193}
 --- !u!1001 &615840030
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5557,7 +5579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0398540479db87b46b30151752c2e52f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 51.95249
+      value: 63.18
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0398540479db87b46b30151752c2e52f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5565,7 +5587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0398540479db87b46b30151752c2e52f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 98.334366
+      value: 102.57
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0398540479db87b46b30151752c2e52f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5898,6 +5920,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1055572204 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 98eeab908363e7a4fad74ee0fa0091a2, type: 3}
+  m_PrefabInstance: {fileID: 695541117}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &1055572205
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055572204}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.1
+  m_Height: 9
+  m_Direction: 1
+  m_Center: {x: 0, y: 4.5, z: 0}
 --- !u!1 &1168940518
 GameObject:
   m_ObjectHideFlags: 0
