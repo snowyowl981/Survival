@@ -16,6 +16,4 @@ public class Hand : MonoBehaviour
     // Start와 Update는 필요없으면 지움(존재만으로 자원 소모)
 
     public Animator anim; // 애니메이션
-
-
 }

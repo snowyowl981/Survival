@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 37552868}
   - component: {fileID: 37552869}
   - component: {fileID: 37552870}
+  - component: {fileID: 37552871}
   m_Layer: 2
   m_Name: Holder
   m_TagString: Untagged
@@ -165,7 +166,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 37552866}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c99f270ef62f014fb9b7104d17d3bc7, type: 3}
   m_Name: 
@@ -284,6 +285,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &37552871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37552866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42042e00b9f13b4eac069b58d5686c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWeaponType: GUN
+  changeWeaponDelayTime: 0.1
+  changeWeaponEndDelayTime: 0.1
+  guns:
+  - {fileID: 2010856132}
+  hands:
+  - {fileID: 548463245}
+  theGunCtrl: {fileID: 37552869}
+  theHandCtrl: {fileID: 37552868}
 --- !u!1 &124646993
 GameObject:
   m_ObjectHideFlags: 0
@@ -5496,7 +5518,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 149d920a518f141428bd27ad57909b3a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1676654837295469583, guid: 149d920a518f141428bd27ad57909b3a, type: 3}
       propertyPath: m_Layer
@@ -11953,7 +11975,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1999161822
 Transform:
   m_ObjectHideFlags: 0
@@ -12112,7 +12134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 032d798bcd4ba244db5da4ea3881fa42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gun: SubMachineGun1
+  gunName: SubMachineGun1
   range: 100
   accuracy: 0.01
   fireRate: 0.11

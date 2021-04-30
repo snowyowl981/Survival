@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GunCtrl : MonoBehaviour
-{
+{   
+    // 활성화 여부
+    [SerializeField]
+    public static bool isActivate = true;
+
     [SerializeField]
     // 현재 장착된 총
     private Gun currentGun;
@@ -39,15 +43,21 @@ public class GunCtrl : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         originPos = transform.localPosition;
         theCrosshair = FindObjectOfType<Crosshair>();
+
+        WeaponManager.currentWeapon = currentGun.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnim = currentGun.anim;
     }
 
     // Update is called once per frame
     void Update()
-    {
-        GunFireRateCalc();
-        TryFire();
-        TryReload();
-        TryFineSight();
+    {   
+        if(isActivate)
+        {
+            GunFireRateCalc();
+            TryFire();
+            TryReload();
+            TryFineSight();
+        }
     }
 
     // 연사속도 재계산
@@ -63,7 +73,7 @@ public class GunCtrl : MonoBehaviour
     // 발사시도
     private void TryFire()
     {
-        if(Input.GetButton("Fire1") && currentFireRate <= 0 && !isReload)
+        if(Input.GetButton("Fire1") && currentFireRate <= 0 && !isReload && !PlayerCtrl.isRun)
         {
             Fire();
         }
@@ -128,6 +138,15 @@ public class GunCtrl : MonoBehaviour
         }
     }
 
+    public void CancelReload()
+    {
+        if(isReload)
+        {
+            StopAllCoroutines();
+            isReload = false;
+        }
+    }
+
     // 재장전
     IEnumerator ReloadCoroutine()
     {
@@ -177,7 +196,7 @@ public class GunCtrl : MonoBehaviour
 
         currentGun.anim.SetBool("FineSight", isFineSight);
         theCrosshair.FineSightAnimation(isFineSight);
-        
+
         if(isFineSight)
         {
             StopAllCoroutines();
@@ -278,5 +297,21 @@ public class GunCtrl : MonoBehaviour
     public bool GetFineSight()
     {
         return isFineSight;
+    }
+
+    public void GunChange(Gun _gun)
+    {
+        if(WeaponManager.currentWeapon != null)
+        {
+            WeaponManager.currentWeapon.gameObject.SetActive(false);
+        }
+        currentGun = _gun;
+        WeaponManager.currentWeapon = currentGun.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnim = currentGun.anim;
+
+        currentGun.transform.localPosition = Vector3.zero;
+        currentGun.gameObject.SetActive(true);
+
+        isActivate = true;
     }
 }

@@ -20,7 +20,7 @@ public class PlayerCtrl : MonoBehaviour
 
     // 상태 변수
     private bool isWalk = false;
-    private bool isRun = false;
+    public static bool isRun = false;
     private bool isGround = true;
     private bool isCrouch = false;
 
@@ -156,7 +156,7 @@ public class PlayerCtrl : MonoBehaviour
     private void IsGround()
     {
         isGround = Physics.Raycast(tr.position, Vector3.down, capsuleCollider.bounds.extents.y + 0.1f);
-        theCrosshair.RunningAnimation(!isGround);
+        theCrosshair.JumpingAnimation(!isGround);
     }
 
 
